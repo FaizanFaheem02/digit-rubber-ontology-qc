@@ -38,6 +38,7 @@
      xmlns:digitrubber3="https://www.tib.eu/digitrubber/">
     <owl:Ontology rdf:about="http://purl.obolibrary.org/obo/digitrubber/digitrubber-full.owl">
         <owl:versionIRI rdf:resource="http://purl.obolibrary.org/obo/digitrubber/releases/2023-06-01/digitrubber-full.owl"/>
+        <owl:imports rdf:resource="https://w3id.org/pmd/co/3.0.0-dev"/>
         <ontology:hasOntologySyntax rdf:resource="http://www.w3.org/ns/formats/RDF_XML"/>
         <obo:IAO_0000700 rdf:resource="http://www.purl.org/OntoMeta/DigitRubber#1"/>
         <dc:creator rdf:resource="http://purl.obolibrary.org/obo/digitrubber/digitrubber-full.owl#DIGIT_RUBBER_project"/>
