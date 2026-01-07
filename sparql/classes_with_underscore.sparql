@@ -1,0 +1,17 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?class ?label ?lang
+WHERE {
+  ?class rdf:type owl:Class ;
+         rdfs:label ?label .
+
+           BIND( LANG(?label) AS ?lang )
+
+  FILTER ( CONTAINS(STR(?label), "_") )
+
+  FILTER ( !STRSTARTS(STR(?class), "http://purl.obolibrary.org/obo/BFO_") && !STRSTARTS(STR(?class), "http://purl.obolibrary.org/obo/IAO_") && !STRSTARTS(STR(?class), "https://w3id.org/pmd/co/PMD_"))
+
+}
+ORDER BY ?class ?lang

@@ -1,0 +1,7 @@
+# Generated QC outputs
+output_files/*.csv
+
+# Python cache and virtual environments
+__pycache__/
+venv/
+.env
