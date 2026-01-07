@@ -15,14 +15,13 @@ All results are written to the output_files/ directory.
 - Missing creation date
 - Missing last update date on
 - Missing both creation **and** update dates
-- Missing German (`de`) labels 
-*(only for active DigitRubber ontology classes that already have an English (`en`) label)*
+- Missing German (`de`) labels (Active DigitRubber ontology classes already have an English (`en`) label)
 - Labels containing underscores
 - Missing curation status 
 - Duplicate class labels  
   (e.g. same label used by different partners)
 
-## Project Structure
+## Project Folder Structure
 - ontology/        → Active DigitRubber ontology
 - sparql/          → SPARQL quality checks
 - output_files/    → CSV reports
