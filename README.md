@@ -3,6 +3,8 @@
 This repository provides SPARQL-based quality control checks for the DigitRubber ontology. It analyzes the ontology and exports CSV reports for common ontology quality issues. The ontology is not modified, all checks are read-only. 
 
 ## How to Run
+
+```bash
 pip install -r requirements.txt
 python run.py
 
