@@ -4,8 +4,7 @@ This repository provides SPARQL-based quality control checks for the DigitRubber
 
 ## How to Run
 
-```bash
-pip install -r requirements.txt
+pip install -r requirements.txt<br>
 python run.py
 
 All results are written to the output_files/ directory.
@@ -24,7 +23,7 @@ All results are written to the output_files/ directory.
   (e.g. same label used by different partners)
 
 ## Project Structure
-ontology/        → Active DigitRubber ontology
-sparql/          → SPARQL quality checks
-output_files/    → CSV reports
-run.py           → Executes all checks
+- ontology/        → Active DigitRubber ontology
+- sparql/          → SPARQL quality checks
+- output_files/    → CSV reports
+- run.py           → Executes all checks
