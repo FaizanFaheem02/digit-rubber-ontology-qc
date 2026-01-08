@@ -15,7 +15,8 @@ All results are written to the output_files/ directory.
 - Missing creation date
 - Missing last update date on
 - Missing both creation **and** update dates
-- Missing German (`de`) labels (Active DigitRubber ontology classes already have an English (`en`) label)
+- Missing German (`de`) labels 
+- Missing German (`en`) labels
 - Labels containing underscores
 - Missing curation status 
 - Duplicate class labels  
