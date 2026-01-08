@@ -9,7 +9,8 @@ WHERE {
   OPTIONAL { ?class rdfs:label ?label }
   FILTER ( isIRI(?class) )
 
-  FILTER ( !STRSTARTS(STR(?class), "http://purl.obolibrary.org/obo/BFO_") && !STRSTARTS(STR(?class), "http://purl.obolibrary.org/obo/IAO_") && !STRSTARTS(STR(?class), "https://w3id.org/pmd/co/PMD_"))
+    # Included only digit rubber IRIs
+  FILTER (STRSTARTS(STR(?class), "http://purl.obolibrary.org/obo/digitrubber/digitrubber-full.owl/DIGITRUBBER_") || STRSTARTS(STR(?class), "https://www.tib.eu/digitrubber#DIGITRUBBER_"))
 
   FILTER NOT EXISTS {
     ?class obo:IAO_0000115 ?definition .

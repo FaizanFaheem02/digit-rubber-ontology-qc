@@ -1,23 +1,23 @@
 PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX owl:  <http://www.w3.org/2002/07/owl#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
-PREFIX pav: <http://purl.org/pav/>
 
 SELECT ?class ?label
 WHERE {
   ?class rdf:type owl:Class .
-   FILTER(isIRI(?class))
+  FILTER(isIRI(?class))
 
+  # Any label (for inspection/debugging)
   OPTIONAL { ?class rdfs:label ?label }
-
-  FILTER (
-    NOT EXISTS { ?class oboInOwl:creation_date ?creationDate } &&
-    NOT EXISTS { ?class pav:lastUpdateOn ?lastUpdate }
-  )
 
   # Included only digit rubber IRIs
   FILTER (STRSTARTS(STR(?class), "http://purl.obolibrary.org/obo/digitrubber/digitrubber-full.owl/DIGITRUBBER_") || STRSTARTS(STR(?class), "https://www.tib.eu/digitrubber#DIGITRUBBER_"))
 
+  # No English label exists
+  FILTER NOT EXISTS {
+    ?class rdfs:label ?l_en .
+    FILTER (LANG(?l_en) = "en")
+  }
 }
 ORDER BY ?class
+

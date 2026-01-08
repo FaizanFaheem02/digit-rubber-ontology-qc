@@ -2,16 +2,26 @@ PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX owl:  <http://www.w3.org/2002/07/owl#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?baseLabel (COUNT(?class) AS ?count)
+SELECT
+  ?baseLabel
+  (GROUP_CONCAT(DISTINCT ?bracket; separator=", ") AS ?brackets)
+  (COUNT(?class) AS ?count)
 WHERE {
   ?class rdf:type owl:Class ;
          rdfs:label ?label .
-         
+
+        # English labels only
+  FILTER (LANG(?label) = "en")   
+
+       FILTER(CONTAINS(STR(?label), "["))
+
+
   BIND(
-    IF(CONTAINS(STR(?label), "["),
-       STRBEFORE(STR(?label), "["),
-       STR(?label)
-    ) AS ?baseLabel
+    STRBEFORE(STR(?label), "[") AS ?baseLabel
+  )
+
+  BIND(
+    STRBEFORE(STRAFTER(STR(?label), "["), "]") AS ?bracket
   )
 }
 GROUP BY ?baseLabel
