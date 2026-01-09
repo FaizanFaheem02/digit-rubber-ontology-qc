@@ -18,8 +18,7 @@ All results are written to the output_files/ directory.
 - Missing German (de) labels (Digit Rubber classes already have English labels)
 - Labels containing underscores
 - Missing curation status 
-- Duplicate class labels  
-  (e.g. same label used by different partners)
+- Duplicate class labels (e.g. same label used by different partners)
 
 ## Project Folder Structure
 - ontology/        → Active DigitRubber ontology
