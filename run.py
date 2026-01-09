@@ -1,4 +1,5 @@
 from rdflib import Graph
+from rdflib.namespace import RDF, RDFS, OWL
 from pathlib import Path
 import csv
 import re
@@ -11,47 +12,18 @@ SPARQL_DIR = Path("sparql")
 OUTPUT_DIR = Path("output_files")
 
 SPARQL_FILES = [
-    "duplicate_class_labels.sparql",
-    "classes_missing_definitions.sparql",
-    "classes_without_curation_status.sparql",
-    "classes_missing_creation_date.sparql",
-    "classes_missing_last_updated_on.sparql",
     "classes_missing_all_dates.sparql",
+    "classes_missing_creation_date.sparql",
     "classes_missing_de_labels.sparql",
+    "classes_missing_definitions.sparql",
+    "classes_missing_last_updated_on.sparql",
     "classes_with_underscore.sparql",
+    "classes_without_curation_status.sparql",
+    "duplicate_class_labels.sparql",  
 ]
 
-raw_data = ONTOLOGY_PATH.read_text(encoding="utf-8")
-
-# -------------------------
-# Normalize xsd:date problem start
-# -------------------------
-def normalize_xsd_date(match):
-    value = match.group(1)
-
-    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
-        return f'"{value}"^^xsd:date'
-
-    m = re.fullmatch(r"(\d{1,2})\.(\d{1,2})\.(\d{4})", value)
-    if m:
-        return f'"{m.group(3)}-{m.group(2).zfill(2)}-{m.group(1).zfill(2)}"^^xsd:date'
-
-    return f'"{value}"^^xsd:string'
-
-
-normalized_data = re.sub(
-    r'"([^"]+)"\^\^xsd:date',
-    normalize_xsd_date,
-    raw_data
-)
-
-# -------------------------
-# Normalize xsd:date problem end
-# -------------------------
-
 g = Graph()
-g.parse(data=normalized_data, format="xml")
-
+g.parse(ONTOLOGY_PATH, format="xml")
 
 OUTPUT_DIR.mkdir(exist_ok=True)
 
@@ -62,13 +34,41 @@ for sparql_file in SPARQL_FILES:
     print(f"Running {sparql_file}")
 
     query_text = query_path.read_text(encoding="utf-8")
-    results = g.query(query_text)
+    result = g.query(query_text)
+
+    is_construct = hasattr(result, "graph") and result.graph is not None
 
     with open(output_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow([str(v) for v in results.vars])
-        for row in results:
-            writer.writerow([str(v) if v else "" for v in row])
+
+        # For CONSTRUCT 
+        if is_construct:
+            writer.writerow(["class", "label"])
+
+            seen = set()
+            result_graph = result.graph
+
+            for cls in result_graph.subjects(RDF.type, OWL.Class):
+                if cls in seen:
+                    continue
+                seen.add(cls)
+
+                label = result_graph.value(cls, RDFS.label)
+
+                writer.writerow([
+                    str(cls),
+                    str(label) if label else ""
+                ])
+
+        # -For SELECT
+        else:
+            writer.writerow([str(v) for v in result.vars])
+
+            for row in result:
+                writer.writerow([
+                    str(v) if v is not None else ""
+                    for v in row
+                ])
 
     print(f" → {output_path}")
 

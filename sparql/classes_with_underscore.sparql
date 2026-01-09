@@ -2,17 +2,16 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT DISTINCT ?class ?label ?lang
+CONSTRUCT {
+  ?class rdf:type owl:Class ;
+         rdfs:label ?label .
+}
 WHERE {
   ?class rdf:type owl:Class ;
          rdfs:label ?label .
 
-           BIND( LANG(?label) AS ?lang )
-
   FILTER ( CONTAINS(STR(?label), "_") )
 
-  # Included only digit rubber IRIs
   FILTER (STRSTARTS(STR(?class), "http://purl.obolibrary.org/obo/digitrubber/digitrubber-full.owl/DIGITRUBBER_") || STRSTARTS(STR(?class), "https://www.tib.eu/digitrubber#DIGITRUBBER_"))
 
 }
-ORDER BY ?class ?lang
