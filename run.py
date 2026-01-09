@@ -2,7 +2,6 @@ from rdflib import Graph
 from rdflib.namespace import RDF, RDFS, OWL
 from pathlib import Path
 import csv
-import re
 import logging
 
 logging.getLogger("rdflib").setLevel(logging.ERROR)
